@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EthicalLogix AI Assistant - LinkedIn Reply Generator</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px 0;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 400;
+        }
+
+        .nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 12px 24px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav a {
+            color: #4a5568;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav a:hover {
+            background: #f7fafc;
+            color: #2b6cb0;
+            transform: translateY(-1px);
+        }
+
+        .main-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .section-title {
+            color: #2d3748;
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 15px;
+        }
+
+        .section-title i {
+            color: #0077b5;
+            font-size: 1.5rem;
+        }
+
+        .input-group {
+            margin-bottom: 24px;
+        }
+
+        .input-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #4a5568;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .input-label i {
+            color: #718096;
+            font-size: 0.9rem;
+        }
+
+        .textarea-container {
+            position: relative;
+            margin-bottom: 16px;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 14px;
+            resize: vertical;
+            transition: all 0.3s ease;
+            background: #ffffff;
+            color: #2d3748;
+            line-height: 1.5;
+        }
+
+        textarea::placeholder {
+            color: #a0aec0;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #0077b5;
+            box-shadow: 0 0 0 3px rgba(0, 119, 181, 0.1);
+        }
+
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f7fafc;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .select-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        select {
+            padding: 10px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            background: #ffffff;
+            color: #2d3748;
+            min-width: 150px;
+            transition: all 0.3s ease;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #0077b5;
+            box-shadow: 0 0 0 3px rgba(0, 119, 181, 0.1);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: #0077b5;
+            color: white;
+            box-shadow: 0 2px 8px rgba(0, 119, 181, 0.2);
+        }
+
+        .btn-primary:hover {
+            background: #005885;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 119, 181, 0.3);
+        }
+
+        .btn-danger {
+            background: #e53e3e;
+            color: white;
+            box-shadow: 0 2px 8px rgba(229, 62, 62, 0.2);
+        }
+
+        .btn-danger:hover {
+            background: #c53030;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(229, 62, 62, 0.3);
+        }
+
+        .btn-secondary {
+            background: #ffffff;
+            color: #4a5568;
+            border: 2px solid #e2e8f0;
+        }
+
+        .btn-secondary:hover {
+            background: #f7fafc;
+            border-color: #cbd5e0;
+            transform: translateY(-1px);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .result-section {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .reply-container {
+            background: #f7fafc;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 4px solid #0077b5;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .reply-box {
+            background: transparent;
+            border: none;
+            width: 100%;
+            min-height: 80px;
+            font-size: 14px;
+            line-height: 1.6;
+            resize: none;
+            outline: none;
+            color: #2d3748;
+            font-family: inherit;
+        }
+
+        .action-bar {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .rating-section {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            background: #ffffff;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .rating-label {
+            font-weight: 600;
+            color: #4a5568;
+            font-size: 0.9rem;
+        }
+
+        .loading {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .loading::after {
+            content: '';
+            width: 16px;
+            height: 16px;
+            border: 2px solid #e2e8f0;
+            border-top: 2px solid #0077b5;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .footer {
+            text-align: center;
+            padding: 40px 0;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+
+        .footer a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: #bee3f8;
+        }
+
+        .success-message {
+            background: #f0fff4;
+            border: 1px solid #9ae6b4;
+            color: #22543d;
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .error-message {
+            background: #fed7d7;
+            border: 1px solid #fc8181;
+            color: #742a2a;
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .main-card {
+                padding: 24px;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .select-group {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .rating-section {
+                margin-left: 0;
+                margin-top: 16px;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .nav {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .btn {
+                justify-content: center;
+            }
+
+            .action-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>EthicalLogix AI Assistant</h1>
+            <p>Professional LinkedIn Reply Generator</p>
+        </header>
+
+        <nav class="nav">
+            <a href="/"><i class="fas fa-home"></i> Home</a>
+            <a href="/templates/dashboard.html"><i class="fas fa-chart-line"></i> Dashboard</a>
+        </nav>
+
+        <div class="main-card">
+            <h2 class="section-title">
+                <i class="fab fa-linkedin"></i>
+                LinkedIn Comment Reply Generator
+            </h2>
+
+            <div class="input-group">
+                <label class="input-label" for="comment">
+                    <i class="fas fa-comment-alt"></i> Enter LinkedIn Comment
+                </label>
+                <div class="textarea-container">
+                    <textarea 
+                        id="comment" 
+                        placeholder="Paste your LinkedIn comment here to generate a professional response..."
+                        rows="6"
+                    ></textarea>
+                </div>
+            </div>
+
+            <div class="controls">
+                <div class="select-group">
+                    <label class="input-label" for="tone">
+                        <i class="fas fa-palette"></i> Response Tone:
+                    </label>
+                    <select id="tone">
+                        <option value="professional">Professional</option>
+                        <option value="friendly">Friendly</option>
+                        <option value="enthusiastic">Enthusiastic</option>
+                        <option value="thoughtful">Thoughtful</option>
+                    </select>
+                </div>
+                
+                <div style="display: flex; gap: 12px;">
+                    <button class="btn btn-primary" onclick="generateReply()">
+                        <i class="fas fa-magic"></i> Generate Reply
+                    </button>
+                    <button class="btn btn-danger" onclick="clearComment()">
+                        <i class="fas fa-trash"></i> Clear
+                    </button>
+                </div>
+            </div>
+
+            <div id="result" class="result-section" style="display: none;">
+                <h3 class="section-title">
+                    <i class="fas fa-lightbulb"></i>
+                    Generated Reply
+                </h3>
+                
+                <div class="reply-container">
+                    <div id="reply" class="reply-box" contenteditable="true"></div>
+                </div>
+
+                <div class="action-bar">
+                    <button class="btn btn-secondary" onclick="copyToClipboard()">
+                    <i class="fas fa-copy"></i> Copy Reply
+                    </button>
+
+                    <button class="btn btn-secondary" onclick="regenerateReply()">
+                        <i class="fas fa-redo"></i> Regenerate
+                    </button>
+                    
+                    <div class="rating-section">
+                        <span class="rating-label">
+                            <i class="fas fa-star"></i> Rate this reply:
+                        </span>
+                        <select id="rating">
+                            <option value="10">Excellent</option>
+                            <option value="9">Very Good</option>
+                            <option value="8" selected>Good</option>
+                            <option value="7">Fair</option>
+                            <option value="6">Average</option>
+                            <option value="5">Below Average</option>
+                            <option value="4">Poor</option>
+                        </select>
+                        <button class="btn btn-primary" onclick="submitFeedback()">
+                            <i class="fas fa-paper-plane"></i> Submit
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>Made with ❤️ by <a href="#">EthicalLogix</a> | Powered by Advanced AI Technology</p>
+        </footer>
+    </div>
+
+    <script>
+    let currentComment = '';
+
+    async function generateReply() {
+        currentComment = document.getElementById('comment').value;
+        if (!currentComment.trim()) {
+            showMessage('Please enter a comment to generate a reply.', 'error');
+            return;
+        }
+
+        const button = document.querySelector('.btn-primary');
+        const originalContent = button.innerHTML;
+        button.disabled = true;
+        button.innerHTML = '<div class="loading">Generating Reply</div>';
+
+        try {
+            const tone = document.getElementById('tone').value;
+            const response = await fetch('/api/generate-reply', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    comment: currentComment,
+                    context: tone
+                })
+            });
+
+            const data = await response.json();
+            if (data.success) {
+                document.getElementById('reply').innerHTML = data.reply;
+                document.getElementById('result').style.display = 'block';
+
+                document.getElementById('result').scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+
+                showMessage('Reply generated successfully!', 'success');
+            } else {
+                showMessage('Error: ' + (data.error || 'Something went wrong'), 'error');
+            }
+        } catch (error) {
+            showMessage('Error: ' + error.message, 'error');
+        } finally {
+            button.disabled = false;
+            button.innerHTML = originalContent;
+        }
+    }
+
+    // ✅ Fixed copyToClipboard() function
+    function copyToClipboard(buttonElement) {
+        const replyElement = document.getElementById('reply');
+        const text = replyElement.innerText || replyElement.textContent;
+
+        if (!text.trim()) {
+            showMessage('Nothing to copy!', 'error');
+            return;
+        }
+
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.focus();
+        textarea.select();
+
+        try {
+            const successful = document.execCommand('copy');
+            if (successful) {
+                const originalContent = buttonElement.innerHTML;
+                buttonElement.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                buttonElement.style.background = '#48bb78';
+
+                setTimeout(() => {
+                    buttonElement.innerHTML = originalContent;
+                    buttonElement.style.background = '';
+                }, 2000);
+
+                showMessage('Reply copied to clipboard!', 'success');
+            } else {
+                throw new Error('Copy command failed');
+            }
+        } catch (err) {
+            showMessage('Failed to copy: ' + err.message, 'error');
+        }
+
+        document.body.removeChild(textarea);
+    }
+
+    function regenerateReply() {
+        if (currentComment) {
+            generateReply();
+        }
+    }
+
+    async function submitFeedback() {
+        const rating = document.getElementById('rating').value;
+        const btn = event.target.closest('.btn');
+        const originalContent = btn.innerHTML;
+
+        try {
+            btn.disabled = true;
+            btn.innerHTML = '<div class="loading">Submitting</div>';
+
+            const response = await fetch('/api/feedback', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({satisfaction: parseInt(rating)})
+            });
+
+            const data = await response.json();
+            if (data.success) {
+                btn.innerHTML = '<i class="fas fa-check"></i> Thank you!';
+                btn.style.background = '#48bb78';
+
+                setTimeout(() => {
+                    btn.innerHTML = originalContent;
+                    btn.style.background = '';
+                    btn.disabled = false;
+                }, 3000);
+
+                showMessage('Thank you for your feedback!', 'success');
+            }
+        } catch (error) {
+            showMessage('Error submitting feedback: ' + error.message, 'error');
+            btn.innerHTML = originalContent;
+            btn.disabled = false;
+        }
+    }
+
+    function clearComment() {
+        document.getElementById('comment').value = '';
+        document.getElementById('result').style.display = 'none';
+        currentComment = '';
+        clearMessages();
+    }
+
+    function showMessage(message, type) {
+        clearMessages();
+        const messageDiv = document.createElement('div');
+        messageDiv.className = type === 'success' ? 'success-message' : 'error-message';
+        messageDiv.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-triangle'}"></i> ${message}`;
+
+        const controls = document.querySelector('.controls');
+        controls.parentNode.insertBefore(messageDiv, controls.nextSibling);
+
+        setTimeout(() => {
+            messageDiv.remove();
+        }, 5000);
+    }
+
+    function clearMessages() {
+        const messages = document.querySelectorAll('.success-message, .error-message');
+        messages.forEach(msg => msg.remove());
+    }
+
+    document.addEventListener('keydown', function(e) {
+        if (e.ctrlKey && e.key === 'Enter') {
+            generateReply();
+        }
+        if (e.ctrlKey && e.key === 'k') {
+            e.preventDefault();
+            document.getElementById('comment').focus();
+        }
+    });
+
+    document.getElementById('comment').addEventListener('input', function() {
+        this.style.height = 'auto';
+        this.style.height = Math.max(this.scrollHeight, 120) + 'px';
+    });
+</script>
+</body>
+</html>

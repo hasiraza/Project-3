@@ -3,7 +3,7 @@ from performance import PerformanceBenchmark, make_track_performance
 from chatbot import generate_linkedin_reply
 from datetime import datetime
 import os
-
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 app = Flask(
     __name__,
     template_folder='../client/templates',

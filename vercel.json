@@ -1,29 +1,15 @@
 {
-  "$schema": "https://openapi.vercel.sh/vercel.json",
   "version": 2,
   "builds": [
     {
-      "src": "server/app.py",
+      "src": "api/index.py",
       "use": "@vercel/python"
     }
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "server/app.py"
-    },
-    {
       "src": "/(.*)",
-      "dest": "server/app.py"
+      "dest": "api/index.py"
     }
-  ],
-  "functions": {
-    "server/app.py": {
-      "memory": 1024,
-      "maxDuration": 30
-    }
-  },
-  "env": {
-    "FLASK_ENV": "production"
-  }
+  ]
 }

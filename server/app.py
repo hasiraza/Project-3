@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, jsonify
-from performance import PerformanceBenchmark, make_track_performance
-from chatbot import generate_linkedin_reply
+from server.performance import PerformanceBenchmark, make_track_performance
+from server.chatbot import generate_linkedin_reply
 from datetime import datetime
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
